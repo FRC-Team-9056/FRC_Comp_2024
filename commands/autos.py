@@ -6,22 +6,21 @@
 
 import commands2
 import constants
-
 from subsystems.can_drivesubsystem import DriveSubsystem
-#from subsystems.pwm_drivesubsystem import DriveSubsystem
 
 
 class Autos(commands2.Command):
     def __init__(self) -> None:
-        super().__init__()
-        self.drive = DriveSubsystem
-        self.addRequirements(self.drive)
+        raise Exception("This is a utility class!")
 
-    def exampleAuto(self) ->  commands2.Command:
-        return (
-            commands2.cmd.run(lambda: self.drive.tankDrive(-0.5, -0.5), self.drive())
-            .withTimeout(1.0)
-            .andThen(
-                commands2.cmd.run(lambda: self.drive.tankDrive(0, 0), self.drive)
-            )
+    @staticmethod
+    def simpleAuto(driveSubsystem: DriveSubsystem):
+        """A simple auto routine that drives forward a specified time, and then stops."""
+        return commands2.cmd.sequence(
+            commands2.StartEndCommand(
+            # Drive forward while the command is executing,
+            lambda: driveSubsystem.tankDrive(constants.kAutoDriveSpeed, constants.kAutoDriveSpeed),
+            lambda: driveSubsystem.tankDrive(0.0,0.0),
+            driveSubsystem
+            ).withTimeout(constants.kAutoDriveTime),
         )

@@ -48,7 +48,7 @@ class DriveSubsystem(commands2.Subsystem):
 
     def tankDrive(self, left: float, right: float) -> None:
         """
-        Drives the robot using arcade controls.
+        Drives the robot using tank controls.
 
         :param fwd: the commanded forward movement
         :param rot: the commanded rotation

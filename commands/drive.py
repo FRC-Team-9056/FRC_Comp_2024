@@ -7,12 +7,11 @@
 import commands2
 import constants
 
-from subsystems.can_drivesubsystem import DriveSubsystem
+from robotcontainer import RobotContainer
 #from subsystems.pwm_launchersubsystem import LauncherSubsystem
 
-
 class DriveRobot(commands2.Command):
-    def __init__(self, drive: DriveSubsystem) -> None:
+    def __init__(self, drive: RobotContainer.drive) -> None:
         super().__init__()
         self.drive = drive
         self.addRequirements(drive)

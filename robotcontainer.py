@@ -6,28 +6,30 @@
 
 import wpilib
 from wpilib.interfaces import GenericHID
-from wpimath.filter import SlewRateLimiter
 
 import commands2
 import commands2.button
 
+### Imports changeable constants
 import constants
 
-from commands.autos import Autos
-from commands.launchnote import LaunchNote
-from commands.preparelaunch import PrepareLaunch
-from commands.roll_in import GrabNote
-from commands.roll_out import PlaceNote
-from commands.climb import Elevatorin
-from commands.handsintheair import Elevatorout
-
+### Imports the subystems
 from subsystems.can_drivesubsystem import DriveSubsystem
 from subsystems.can_launchersubsystem import LauncherSubsystem
 from subsystems.rollerclawsubsystem import ClawSubsystem
 from subsystems.elevatorsubsystem import ElevatorSubsystem
 
-# from subsystems.pwm_drivesubsystem import DriveSubsystem
-# from subsystems.pwm_launchersubsystem import LauncherSubsystem
+### Imports the commands
+## Autonomous Commands
+from commands.autos import Autos
+from commands.launchnote import LaunchNote
+from commands.preparelaunch import PrepareLaunch
+
+#
+from commands.roll_in import GrabNote
+from commands.roll_out import PlaceNote
+from commands.climb import Elevatorin
+from commands.handsintheair import Elevatorout
 
 
 class RobotContainer:
@@ -39,7 +41,6 @@ class RobotContainer:
     """
 
     def __init__(self) -> None:
-        filter = SlewRateLimiter(constants.kDriveSlewRate)
         # The driver's controller
         self.driverController = commands2.button.CommandXboxController(
             constants.kDriverControllerPort
@@ -54,12 +55,16 @@ class RobotContainer:
         self.claw = ClawSubsystem()
         self.elevator = ElevatorSubsystem()
 
-        self.configureButtonBindings()
- 
-        self.drive.setDefaultCommand(
-            # A double stick-stick trank command, with forward/backward controlled on the left fore
-            # and aft, and right controlled by fore and aft
+        # Sets autonomous commands
+        self.simpleAuto = Autos.simpleAuto(self.drive)
 
+        # Initializes button bindings object for controls
+        self.configureButtonBindings()
+
+        # Sets the default command of the robot for the device indicated.
+        self.drive.setDefaultCommand(
+            # A double stick-stick tank command, with forward/backward controlled on the left fore
+            # and aft, and right controlled by fore and aft
             commands2.cmd.run(
                 lambda: self.drive.tankDrive(
                     -self.driverController.getLeftY(),
@@ -68,7 +73,15 @@ class RobotContainer:
                 self.drive,
             )
         )
+    
+        # Autonomous Chooser
+        self.chooser = wpilib.SendableChooser()
 
+        # Add commands to the autonomous command chooser
+        self.chooser.setDefaultOption("Simple Auto", self.simpleAuto)
+
+        # Put the chooser on the dashboard
+        wpilib.SmartDashboard.putData("Autonomous", self.chooser)
 
     def configureButtonBindings(self):
         ### Launcher ###
@@ -110,4 +123,4 @@ class RobotContainer:
         )
 
     def getAutonomousCommand(self) -> commands2.Command:
-        return Autos.exampleAuto()
+        return self.chooser.getSelected()

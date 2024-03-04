@@ -55,3 +55,7 @@ kRollerClawMotor = 7
 kClawCurrentLimit = 10
 kIntakeClawSpeed = -1
 kOuttakeClawSpeed = 1
+
+### Autonomous ###
+kAutoDriveSpeed = .5
+kAutoDriveTime = 2

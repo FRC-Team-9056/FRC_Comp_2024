@@ -18,7 +18,7 @@ class Elevatorin (commands2.Command):
         self.addRequirements(elevator)
 
     def initialize(self) -> None:
-        self.elevator.elevatorin (constants.kElevDt)
+        self.elevator.elevatorin(constants.kElevDt)
 
     def isFinished(self) -> bool:
         return False
