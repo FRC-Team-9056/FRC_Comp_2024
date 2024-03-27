@@ -37,11 +37,11 @@ kLauncherMotor = 6
 kLauncherCurrentLimit = 80
 kFeedCurrentLimit = 80
 
-kLauncherSpeed = 1          
-kLaunchFeederSpeed = 1
-kIntakeLauncherSpeed = -1
-kIntakeFeederSpeed = -1
-kLauncherDelay = 100
+kLauncherSpeed = -1          
+kLaunchFeederSpeed = -1
+kIntakeLauncherSpeed = .6
+kIntakeFeederSpeed = .6
+kLauncherDelay = .5
 
 ### Elevator ###
 kLeftElevatorMotor = 8
@@ -57,6 +57,6 @@ kIntakeClawSpeed = -1
 kOuttakeClawSpeed = 1
 
 ### Autonomous ###
-kAutoDriveSpeed = .5
-kAutoDriveTime = 2
-kAutoLaunchTime = .5
+kAutoDriveSpeed = -.6
+kAutoDriveTime = 5
+kAutoLaunchTime = 2

@@ -45,6 +45,7 @@ class DriveSubsystem(commands2.Subsystem):
             self.leftDrive,
             self.rightDrive,
         )
+        self.drive.setSafetyEnabled(False)
 
     def tankDrive(self, left: float, right: float) -> None:
         """

@@ -7,6 +7,7 @@
 import commands2
 import constants
 from .launchnote import LaunchNote
+from .preparelaunch import PrepareLaunch
 from subsystems.can_drivesubsystem import DriveSubsystem
 from subsystems.can_launchersubsystem import LauncherSubsystem
 
@@ -31,7 +32,10 @@ class Autos(commands2.Command):
     def complexAuto(driveSubsystem: DriveSubsystem, launcherSubsystem: LauncherSubsystem):
         #A more complex auto routine that launch the note at certain speed, and then stops.
         return commands2.cmd.sequence(
-            LaunchNote().withTimeout(constants.kAutoLaunchTime),
+            PrepareLaunch(launcherSubsystem)
+            .withTimeout(constants.kLauncherDelay)
+            .andThen(LaunchNote(launcherSubsystem))
+            .withTimeout(constants.kAutoLaunchTime),
             commands2.StartEndCommand(
             # Drive forward while the command is executing,
             lambda: driveSubsystem.tankDrive(constants.kAutoDriveSpeed, constants.kAutoDriveSpeed),

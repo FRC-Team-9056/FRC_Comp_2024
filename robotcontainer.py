@@ -57,6 +57,7 @@ class RobotContainer:
 
         # Sets autonomous commands
         self.simpleAuto = Autos.simpleAuto(self.drive)
+        self.complexAuto = Autos.complexAuto(self.drive, self.launcher)
 
         # Initializes button bindings object for controls
         self.configureButtonBindings()
@@ -79,21 +80,21 @@ class RobotContainer:
 
         # Add commands to the autonomous command chooser
         self.chooser.setDefaultOption("Simple Auto", self.simpleAuto)
-
+        self.chooser.addOption("Complex AUto",self.complexAuto)
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.chooser)
 
     def configureButtonBindings(self):
         ### Launcher ###
         # Intake #
-        self.operatorController.leftBumper().whileTrue(
+        self.operatorController.rightBumper().whileTrue(
             PrepareLaunch(self.launcher)
             .withTimeout(constants.kLauncherDelay)
             .andThen(LaunchNote(self.launcher))
             .handleInterrupt(lambda: self.launcher.stop())
         )
         # Launch #
-        self.operatorController.rightBumper().whileTrue(self.launcher.getIntakeCommand())
+        self.operatorController.leftBumper().whileTrue(self.launcher.getIntakeCommand())
 
         ### Roller Claw ###
         # Intake #
